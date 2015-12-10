@@ -3,7 +3,7 @@
 //HW43- This or That
 //2015-12-07
 
-public class Binary {
+public class Binary implements Comparable {
 
     private int _decNum;
     private String _binNum;
@@ -14,9 +14,9 @@ public class Binary {
       pre:  n/a
       post: initializes _decNum to 0, _binNum to "0"
       =====================================*/
-    public Binary() {
-        _decNum = 0;
-        _binNum = "0";
+    public Binary() { 
+	_decNum = 0;
+	_binNum = "0";
     }
 
 
@@ -26,8 +26,8 @@ public class Binary {
       post: sets _decNum to n, _binNum to equiv string of bits
       =====================================*/
     public Binary( int n ) {
-        _decNum = n;
-        _binNum = decToBin(n);
+	_decNum = n;
+	_binNum = decToBin(n);
     }
 
 
@@ -37,20 +37,22 @@ public class Binary {
       post: sets _binNum to input, _decNum to decimal equiv
       =====================================*/
     public Binary( String s ) {
-        _binNum = s;
-        _decNum = binToDec(s);
+	_binNum = s;
+	_decNum = binToDec(s);
     }
 
+    public int getDecNum(){
+	return _decNum;
+    }
 
     /*=====================================
       String toString() -- returns String representation of this Object
       pre:  n/a
       post: returns String of 1's and 0's representing value of this Object
       =====================================*/
-    public String toString() {
-        return _binNum;
+    public String toString() { 
+	return _binNum;
     }
-
 
     /*=====================================
       String decToBin(int) -- converts base-10 input to binary
@@ -63,14 +65,14 @@ public class Binary {
       decToBin(14) -> "1110"
       =====================================*/
     public static String decToBin( int n ) {
-        int rems = 0;
-        int place = 1;
-        while (n!=0) {
-            rems = (n%2)*place + rems;
-            place *= 10;
-            n /= 2;
-        }
-        return rems.toString();
+	String ans = "";
+	int temp = 0;
+	while(n > 0){
+	    temp =  n%2;
+	    n = n/2;
+	    ans = "" + temp + ans;
+	}
+	return ans;
     }
 
 
@@ -84,16 +86,17 @@ public class Binary {
       decToBinR(3) -> "11"
       decToBinR(14) -> "1110"
       =====================================*/
-    public static String decToBinR( int n ) {
-        /****** YOUR IMPLEMENTATION HURRR ******/
+    public static String decToBinR( int n ) { 
+	if(n==0) return "";
+	return decToBinR(n/2) + n%2; 
     }
 
 
     /*=====================================
       String binToDec(String) -- converts base-10 input to binary
       pre:  s represents non-negative binary number
-      post: returns decimal equivalent as int
-      eg
+      post: returns String of bits
+      eg  
       binToDec("0") -> 0
       binToDec("1") -> 1
       binToDec("10") -> 2
@@ -101,46 +104,44 @@ public class Binary {
       binToDec("1110") -> 14
       =====================================*/
     public static int binToDec( String s ) {
-        int val = 0;
-        for (int i=1; i<s; i*=10){
-            val += (s%(i*10))*i;
-        }
-        return val;
+	int temp = Integer.parseInt(s);
+	int n = 0;
+	int ans = 0;
+	while(temp > 0){
+	    ans += (temp%10)*Math.pow(2,n);
+	    temp = temp/10;
+	    n += 1;
+	}
+	return ans;
     }
 
 
     /*=====================================
       String binToDecR(String) -- converts base-10 input to binary, recursively
       pre:  s represents non-negative binary number
-      post: returns decimal equivalent as int
-      eg
+      post: returns String of bits
+      eg  
       binToDecR("0") -> 0
       binToDecR("1") -> 1
       binToDecR("10") -> 2
       binToDecR("11") -> 3
       binToDecR("1110") -> 14
       =====================================*/
-    public static int binToDecR( String s ) {
-        /****** YOUR IMPLEMENTATION HURRR ******/
+    public static int binToDecR( String s ) { 
+	int temp = Integer.parseInt(s);
+	if(temp == 0) return 0;
+	return 2*binToDecR("" + temp/10) + (temp)%10;
     }
 
 
     /*=============================================
       boolean equals(Object) -- tells whether 2 Objs are equivalent
       pre:  other is an instance of class Binary
-      post: Returns true if this and other are aliases (pointers to same
+      post: Returns true if this and other are aliases (pointers to same 
       Object), or if this and other represent equal binary values
       =============================================*/
-    public boolean equals( Object other ) {
-        if (this == other) {
-            return true;
-        }
-        else if (this.equals(other)) {
-            return true;
-        }
-        else {
-            return false;
-        }
+    public boolean equals( Object other ) { 
+	return this == other || this.compareTo(other) == 0;
     }
 
 
@@ -151,49 +152,77 @@ public class Binary {
       negative integer if this<input, positive integer otherwise
       =============================================*/
     public int compareTo( Object other ) {
-        if (this.equals(other)) {
-            return 0;
-        }
-        else {
-            return this-other;
-        }
+	if (other instanceof Comparable) {
+	    if (other instanceof Binary) {
+		if (this._decNum==((Binary)other).getDecNum()) {
+		    return 0;
+		}
+		else if (this._decNum<((Binary)other).getDecNum()) {
+		    return -1;
+		}
+		else {
+		    return 1;
+		}
+	    }
+	    if (other instanceof Hexadecimal) {
+		if (this._decNum==((Hexadecimal)other).getDecNum()) {
+		    return 0;
+		}
+		else if (this._decNum<((Hexadecimal)other).getDecNum()) {
+		    return -1;
+		}
+		else {
+		    return 1;
+		}
+	    }
+	    if (other instanceof Rational) {
+		if (this._decNum==((Rational)other).floatValue()) {
+		    return 0;
+		}
+		else if (this._decNum<((Rational)other).floatValue()) {
+		    return -1;
+		}
+		else {
+		    return 1;
+		}
+	    }
+	}   
+	throw new ClassCastException("\ncompareTo() input not a Binary");
     }
 
 
     //main method for testing
-    public static void main( String[] args ) {
+    public static void main( String[] args ) throws NullPointerException {
 
-        //=========================================
-          System.out.println();
-          System.out.println( "Testing ..." );
+	System.out.println();
+	System.out.println( "Testing ..." );
 
-          Binary b1 = new Binary(5);
-          Binary b2 = new Binary(5);
-	  Binary b3 = b1;
-          Binary b4 = new Binary(7);
+	Binary b1 = new Binary(5);
+	Binary b2 = new Binary(5);
+	Binary b3 = b1;
+	Binary b4 = new Binary(7);
 
-          System.out.println( b1 );
-          System.out.println( b2 );
-          System.out.println( b3 );
-          System.out.println( b4 );
+	System.out.println( b1 );
+	System.out.println( b2 );
+	System.out.println( b3 );       
+	System.out.println( b4 );       
 
-          System.out.println( "\n==..." );
-          System.out.println( b1 == b2 ); //should be false
-          System.out.println( b1 == b3 ); //should be true
+	System.out.println( "\n==..." );
+	System.out.println( b1 == b2 ); //should be false
+	System.out.println( b1 == b3 ); //should be true
 
-          System.out.println( "\n.equals()..." );
-          System.out.println( b1.equals(b2) ); //should be true
-          System.out.println( b1.equals(b3) ); //should be true
-          System.out.println( b3.equals(b1) ); //should be true
-          System.out.println( b4.equals(b2) ); //should be false
-          System.out.println( b1.equals(b4) ); //should be false
+	System.out.println( "\n.equals()..." );
+	System.out.println( b1.equals(b2) ); //should be true
+	System.out.println( b1.equals(b3) ); //should be true
+	System.out.println( b3.equals(b1) ); //should be true
+	System.out.println( b4.equals(b2) ); //should be false
+	System.out.println( b1.equals(b4) ); //should be false
 
-          System.out.println( "\n.compareTo..." );
-          System.out.println( b1.compareTo(b2) ); //should be 0
-          System.out.println( b1.compareTo(b3) ); //should be 0
-          System.out.println( b1.compareTo(b4) ); //should be neg
-          System.out.println( b4.compareTo(b1) ); //should be pos
-          //=========================================
+	System.out.println( "\n.compareTo..." );
+	System.out.println( b1.compareTo(b2) ); //should be 0
+	System.out.println( b1.compareTo(b3) ); //should be 0
+	System.out.println( b1.compareTo(b4) ); //should be neg
+	System.out.println( b4.compareTo(b1) ); //should be pos
     }//end main()
 
 } //end class

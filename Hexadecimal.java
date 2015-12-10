@@ -3,7 +3,7 @@
 //HW44- This or That or Fourteen Other Things
 //2015-12-08
 
-public class Hexadecimal {
+public class Hexadecimal implements Comparable{
 
     // instance variables
     
@@ -44,6 +44,9 @@ public class Hexadecimal {
     }
 
     // methods
+    public int getDecNum(){
+	return _decNum;
+    }
     
     /*=====================================
       String toString() -- returns String representation of this Object
@@ -137,18 +140,44 @@ public class Hexadecimal {
       negative integer if this<input, positive integer otherwise
       =============================================*/
     public int compareTo( Object other ) {
-	Hexadecimal otherHex = (Hexadecimal)(other);
-	int x = this._decNum - otherHex._decNum;
-	if ( x > 0 ) {
-	    return 1;
-	}
-	else if ( x < 0 ) {
-	    return -1;
-	}
-	else {
-	    return x;
-	}
+        if (other instanceof Comparable) {
+            if (other instanceof Binary) {
+                if (this._decNum==((Binary)other).getDecNum()) {
+                    return 0;
+                }
+                else if (this._decNum<((Binary)other).getDecNum()) {
+                    return -1;
+                }
+                else {
+                    return 1;
+                }
+            }
+            if (other instanceof Hexadecimal) {
+                if (this._decNum==((Hexadecimal)other).getDecNum()) {
+                    return 0;
+                }
+                else if (this._decNum<((Hexadecimal)other).getDecNum()) {
+                    return -1;
+                }
+                else {
+                    return 1;
+                }
+            }
+            if (other instanceof Rational) {
+                if (this._decNum==((Rational)other).floatValue()) {
+                    return 0;
+                }
+                else if (this._decNum<((Rational)other).floatValue()) {
+                    return -1;
+                }
+                else {
+                    return 1;
+                }
+            }
+        }
+        throw new ClassCastException("\ncompareTo() input not a Binary");
     }
+
 
     //main method for testing
     public static void main( String[] args ) {

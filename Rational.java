@@ -111,14 +111,6 @@ public class Rational implements Comparable {
 	return ret;
     }
 
-    public int compareTo(Rational R) {
-	Rational S = new Rational(num,den);
-	S.reduce();
-	R.reduce();
-	R.subtract(S);
-	return R.num;
-    }
-    
     //PHASE IV
 
     public boolean equals(Rational R){
@@ -140,12 +132,43 @@ public class Rational implements Comparable {
     }
 
     //Interface
-    public int compareTo(Object O){
-	Object P = new Rational(num, den);
-	P.reduce();
-	O.reduce();
-	O.subtract(P);
-	return O.num;
+    public int compareTo( Object other ) {
+        if (other instanceof Comparable) {
+            if (other instanceof Binary) {
+                if (this.floatValue()==((Binary)other).getDecNum()) {
+                    return 0;
+                }
+                else if (this.floatValue()<((Binary)other).getDecNum()) {
+                    return -1;
+                }
+                else {
+                    return 1;
+                }
+            }
+            if (other instanceof Hexadecimal) {
+                if (this.floatValue()==((Hexadecimal)other).getDecNum()) {
+                    return 0;
+                }
+                else if (this.floatValue()<((Hexadecimal)other).getDecNum()) {
+                    return -1;
+                }
+                else {
+                    return 1;
+                }
+            }
+            if (other instanceof Rational) {
+                if (this.floatValue()==((Rational)other).floatValue()) {
+                    return 0;
+                }
+                else if (this.floatValue()<((Rational)other).floatValue()) {
+                    return -1;
+                }
+                else {
+                    return 1;
+                }
+            }
+        }
+        throw new ClassCastException("\ncompareTo() input not a Binary");
     }
 
     //main method -- Diagnostics
