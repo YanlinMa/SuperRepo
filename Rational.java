@@ -1,3 +1,8 @@
+//Andrea Ma
+//APCS1 pd10
+//HW45- Come Together
+//2015-12-09
+
 public class Rational implements Comparable {
 
     //Instance Variables

@@ -1,7 +1,7 @@
-//Team 2/Peglegs- Andie Ma, Denis Duman
+//Andrea Ma
 //APCS1 pd10
-//HW42- Array of Titanium
-//2015-12-6
+//HW45- Come Together
+//2015-12-09
 
 public class SuperArray {
  

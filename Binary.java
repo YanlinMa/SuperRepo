@@ -1,7 +1,7 @@
 //Andrea Ma
 //APCS1 pd10
-//HW43- This or That
-//2015-12-07
+//HW45- Come Together
+//2015-12-09
 
 public class Binary implements Comparable {
 

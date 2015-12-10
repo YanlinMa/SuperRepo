@@ -1,7 +1,7 @@
-//Team 1031/1225- Kate Johnston and Andrea Ma
+//Andrea Ma
 //APCS1 pd10
-//HW44- This or That or Fourteen Other Things
-//2015-12-08
+//HW45- Come Together
+//2015-12-09
 
 public class Hexadecimal implements Comparable{
 
